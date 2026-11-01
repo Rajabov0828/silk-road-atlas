@@ -25,6 +25,58 @@ const FALLBACK_STYLE: StyleSpecification = {
   layers: [{ id: 'osm-tiles-layer', type: 'raster', source: 'osm-tiles', minzoom: 0, maxzoom: 19 }],
 };
 
+class ThreeDControl implements maplibregl.IControl {
+  private _map?: MLMap;
+  private _btn?: HTMLButtonElement;
+  private _container?: HTMLDivElement;
+  private _is3d = false;
+
+  onAdd(map: MLMap): HTMLElement {
+    this._map = map;
+    this._container = document.createElement('div');
+    this._container.className = 'maplibregl-ctrl maplibregl-ctrl-group';
+    this._btn = document.createElement('button');
+    this._btn.type = 'button';
+    this._btn.className = 'maplibregl-ctrl-3d';
+    this._btn.title = 'Toggle 3D perspective pitch';
+    this._btn.innerHTML = '<span style="font-weight:800;font-size:12px;letter-spacing:-0.5px;">3D</span>';
+    this._btn.onclick = () => this.toggle();
+    this._container.appendChild(this._btn);
+
+    map.on('pitch', () => {
+      const active = map.getPitch() > 15;
+      if (this._is3d !== active) {
+        this._is3d = active;
+        this.updateStyle();
+      }
+    });
+
+    return this._container;
+  }
+
+  toggle(): void {
+    if (!this._map) return;
+    this._is3d = !this._is3d;
+    this._map.easeTo({
+      pitch: this._is3d ? 55 : 0,
+      bearing: this._is3d ? -20 : 0,
+      duration: 1000,
+    });
+    this.updateStyle();
+  }
+
+  private updateStyle(): void {
+    if (!this._btn) return;
+    this._btn.style.color = this._is3d ? '#1d4ed8' : '#334155';
+    this._btn.style.backgroundColor = this._is3d ? '#eff6ff' : '#ffffff';
+  }
+
+  onRemove(): void {
+    this._container?.remove();
+    this._map = undefined;
+  }
+}
+
 export function createMap(container: string, cfg: AppConfig): MLMap {
   const styleUrl = amazonStyleUrl(cfg, 'Standard', false);
   const map = new maplibregl.Map({
@@ -38,6 +90,7 @@ export function createMap(container: string, cfg: AppConfig): MLMap {
       [80, 49],
     ],
   });
+  map.addControl(new ThreeDControl(), 'top-right');
   map.addControl(new maplibregl.NavigationControl({ visualizePitch: true }), 'top-right');
   map.addControl(new maplibregl.ScaleControl({ unit: 'metric' }), 'bottom-right');
   map.addControl(new maplibregl.FullscreenControl(), 'top-right');

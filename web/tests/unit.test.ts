@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { caravanDays, formatDistance, formatDuration, speedup } from '../src/caravan';
-import { applyFilters, normalize, sitesInside, topSites, type FilterState } from '../src/filters';
+import { applyFilters, normalize, sitesInside, sitesNearRoute, topSites, type FilterState } from '../src/filters';
 import { amazonStyleUrl, loadConfig } from '../src/config';
 import type { Category, SiteFeature } from '../src/types';
 
@@ -69,6 +69,17 @@ describe('filters', () => {
 
   it('ranks top sites by score', () => {
     expect(topSites(sites, 2).map((s) => s.id)).toEqual([2, 1]);
+  });
+
+  it('finds sites near a route polyline', () => {
+    const route: [number, number][] = [
+      [64.4, 39.75],
+      [64.42, 39.77],
+      [64.45, 39.79],
+    ];
+    const near = sitesNearRoute(sites, route, 10);
+    expect(near.map((s) => s.id)).toContain(1); // Poi Kalyan is in Bukhara near [64.41, 39.77]
+    expect(near.map((s) => s.id)).not.toContain(3); // Khiva is ~450km away
   });
 });
 

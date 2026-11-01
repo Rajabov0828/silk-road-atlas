@@ -16,9 +16,10 @@ Silk Road Atlas puts **2,024 historical and cultural heritage sites** across Uzb
   - **Routes v2 (`OptimizeWaypoints`)**: Algorithmic itinerary optimizer that solves the Traveling Salesperson Problem for custom tourist routes while preserving start/end points.
   - **Routes v2 (`CalculateIsolines`)**: Computes 15-, 30-, and 60-minute driving isochrones (reachability polygons) from any clicked point in Uzbekistan.
   - **Places v2 (`SearchText` & `ReverseGeocode`)**: Bounding-box-constrained search across Uzbekistan and real-time reverse geocoding for historical monuments.
-  - **Maps v2**: Vector tile rendering with MapLibre GL JS and custom dark styling.
+  - **Maps v2**: High-performance vector tile rendering with MapLibre GL JS and custom Silk Road light palette.
+- **Cinematic 3D Flyover**: One-click 3D camera toggle (55° tilt pitch & dynamic bearing) for cinematic aerial flyovers over ancient Silk Road oases.
 - **Secure Serverless Architecture**:
-  - Browsers never receive raw AWS credentials. API requests are proxied through an **AWS Lambda (Python 3.12 + Pydantic v2)** microservice via **Amazon API Gateway HTTP API**.
+  - Browsers never receive raw AWS credentials. API requests are securely proxied through an **AWS Lambda (Python 3.12 + Pydantic v2)** microservice via **Amazon API Gateway HTTP API**.
   - Maps API Key is locked to `geo-maps:*` only and restricted by domain referrers.
   - Static assets and dataset are served from **Amazon S3** via **Amazon CloudFront** using **Origin Access Control (OAC)** and strict security headers.
 
@@ -27,24 +28,29 @@ Silk Road Atlas puts **2,024 historical and cultural heritage sites** across Uzb
 - **Modern, Accessible UI**:
   - Zero framework bloat: Vite + TypeScript + MapLibre GL JS with sub-second page loads.
   - No `innerHTML` usage anywhere to eliminate DOM-based XSS risks.
-  - Dynamic clustering with UNESCO highlight rings, interactive category chips, and deep-linkable URLs (`#site=way/185036984`).
+  - Interactive category chips, instant quick filters, and deep-linkable URLs (`#site=way/185036984`).
+- **Interactive Audio Guide**: Browser-native Web Speech API voice synthesis provides educational museum-quality audio tours for every monument and caravan leg.
 - **Comprehensive Automated Testing**:
   - 16 backend unit & integration tests covering routing, waypoint optimization, isolines, and validation error branches.
-  - 9 frontend unit tests verifying distance formatting, caravan calculations, and spatial point-in-polygon checks.
+  - 10 frontend unit tests verifying distance formatting, caravan calculations, along-route spatial filters, and point-in-polygon checks.
   - 9 data pipeline tests verifying classification and deduplication.
 
 ### 3. Usefulness & Impact (25%)
 - **Real-World Cultural Preservation & Tourism**:
   - Highlights neglected historical monuments, roadside caravanserais (*rabats*), and madrasas that generic tourist maps omit.
   - Identifies 339 monuments within 4 UNESCO World Heritage zones: *Historic Centre of Bukhara*, *Samarkand – Crossroad of Cultures*, *Itchan Kala (Khiva)*, and *Historic Centre of Shakhrisyabz*.
-- **Practical Trip Planning**:
+- **Practical Trip Planning & GPX Export**:
   - Travelers can select monuments, click "Route my trip", and get an optimized itinerary with drive times, total kilometers, and turn-by-turn road paths.
+  - Export custom itineraries directly to **GPX** for handheld GPS devices (Garmin, OsmAnd) or open with 1-click in **Google Maps**.
+- **Along-Route Heritage Discovery**:
+  - Automatically discovers caravanserais and historic ruins situated within 10 km of the computed driving corridor.
 - **Accessibility & "Reach" Analysis**:
   - Arriving at a train station or hotel? Click "Pick a starting point" to instantly see how many monuments are reachable within 15, 30, or 60 minutes.
 
 ### 4. Creativity & Storytelling (25%)
 - **Caravan Story Mode**:
   - Takes users on a guided historical journey across Uzbekistan: **Margilan (Fergana Silk) → Kokand → Tashkent → Samarkand → Shahrisabz → Bukhara → Khiva**.
+  - Curated high-resolution photography and historical era context for each stop.
   - **Caravan Maths**: Calculates travel time for a traditional camel caravan covering 30 km/day versus a modern automobile on M37/A380 highways.
   - *Example*: Samarkand to Bukhara (273 km) took a loaded 14th-century caravan **9 full days** of desert travel; today, Amazon Location Routes shows it takes **3 hours and 33 minutes by car** (a **60× speedup**).
 
@@ -115,8 +121,7 @@ flowchart TD
 - Python 3.11+
 - AWS CLI configured (`aws configure`)
 
-### 1. Local Development (Single Command)
-Run both the local backend API proxy (which connects to your AWS Location Service) and the Vite frontend:
+### 1. Local Development
 ```bash
 # Clone the repository
 git clone <repo-url>
@@ -136,29 +141,19 @@ Open [http://localhost:5173](http://localhost:5173) in your browser.
 ### 2. Running Automated Tests
 ```bash
 # Backend unit & integration tests (16 tests)
-cd backend
-pytest -v
+cd backend && pytest -v
 
-# Frontend unit tests (9 tests)
-cd ../web
-npm test
+# Frontend unit tests (10 tests)
+cd ../web && npm test
 
 # Pipeline tests (9 tests)
-cd ../data-pipeline
-pytest -v
+cd ../data-pipeline && pytest -v
 ```
 
 ### 3. Deploying to AWS (S3 + CloudFront + Lambda + API Gateway)
-A complete deployment script automates backend packaging, CDK synthesis, deployment, frontend build, and cache invalidation:
 ```bash
 python scripts/deploy.py
 ```
-
----
-
-## 📹 Demo Video & Presentation
-
-See [`DEMO_SCRIPT.md`](./DEMO_SCRIPT.md) for the exact 2.5-minute video presentation script highlighting each feature and AWS service used.
 
 ---
 

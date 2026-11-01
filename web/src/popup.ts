@@ -1,5 +1,6 @@
 import * as maplibregl from 'maplibre-gl';
 import type { Popup } from 'maplibre-gl';
+import { stopSpeaking, toggleAudioGuide } from './audio';
 import { CATEGORY_META } from './config';
 import { clear, h, toast, wikipediaUrl } from './dom';
 import type { AppContext } from './context';
@@ -44,6 +45,18 @@ export function openSitePopup(ctx: AppContext, site: SiteFeature): void {
     ctx.trip.has(p.id) ? '✓ In trip' : '+ Add to trip',
   );
 
+  const audioBtn = h(
+    'button',
+    {
+      class: 'btn small ghost audio-btn',
+      onclick: () => {
+        const narration = `${p.name}, in ${p.city}, Uzbekistan. ${description.textContent}`;
+        toggleAudioGuide(narration, audioBtn);
+      },
+    },
+    '🎧 Audio Guide',
+  );
+
   const content = h(
     'div',
     { class: 'popup' },
@@ -79,6 +92,7 @@ export function openSitePopup(ctx: AppContext, site: SiteFeature): void {
         'div',
         { class: 'actions' },
         tripBtn,
+        audioBtn,
         h('button', { class: 'btn small ghost', onclick: () => ctx.reachFrom(site.geometry.coordinates, p.name) }, '⏱ Drive-time area'),
       ),
     ),
@@ -91,7 +105,10 @@ export function openSitePopup(ctx: AppContext, site: SiteFeature): void {
     .addTo(ctx.map);
   popup = current;
   history.replaceState(null, '', `#site=${encodeURIComponent(p.id)}`);
-  current.on('close', () => history.replaceState(null, '', location.pathname));
+  current.on('close', () => {
+    stopSpeaking();
+    history.replaceState(null, '', location.pathname);
+  });
 
   // Asynchronously load real site photography and summary
   getSiteSummary(p).then((summary) => {

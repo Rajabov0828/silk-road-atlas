@@ -1,4 +1,5 @@
 import type { AppContext } from '../context';
+import { stopSpeaking, toggleAudioGuide } from '../audio';
 import { caravanDays, formatDistance, formatDuration, speedup } from '../caravan';
 import { $, clear, h, toast } from '../dom';
 import { fitTo, setRoute, setStops } from '../map';
@@ -51,6 +52,7 @@ export function initStory(ctx: AppContext): void {
 
   async function go(target: number): Promise<void> {
     if (target < 0 || target > STORY.length) return;
+    stopSpeaking();
     step = target;
     prev.disabled = step <= 0;
     next.disabled = step >= STORY.length;
@@ -71,7 +73,7 @@ export function initStory(ctx: AppContext): void {
       STORY.slice(0, step + 1).map((s, i) => ({ position: s.position, label: String(i + 1) })),
     );
     setRoute(ctx.map, r ? r.legs.slice(0, step) : null);
-    ctx.map.flyTo({ center: stop.position, zoom: stop.zoom, speed: 0.8, curve: 1.6, essential: true });
+    ctx.map.flyTo({ center: stop.position, zoom: stop.zoom, pitch: 45, bearing: -15, speed: 0.8, curve: 1.6, essential: true });
 
     const leg = r && step > 0 ? r.legs[step - 1] : null;
     const imgCard = h(
@@ -96,15 +98,31 @@ export function initStory(ctx: AppContext): void {
           )
         : h('div', { class: 'muted small' }, 'The caravan loads up its silk here.'),
       h(
-        'button',
-        {
-          class: 'btn small ghost',
-          onclick: () => {
-            ctx.showTab('explore');
-            $('#panel-explore').dispatchEvent(new CustomEvent('explore:text', { detail: stop.city }));
+        'div',
+        { class: 'row' },
+        h(
+          'button',
+          {
+            class: 'btn small ghost audio-btn',
+            onclick: (e: Event) => {
+              const narration = `Stop ${step + 1}: ${stop.city}. ${stop.era}. ${stop.text}`;
+              toggleAudioGuide(narration, e.currentTarget as HTMLElement);
+            },
           },
-        },
-        `🔍 Explore heritage sites in ${stop.city}`,
+          '🎧 Listen Story',
+        ),
+        h(
+          'button',
+          {
+            class: 'btn small ghost',
+            onclick: () => {
+              stopSpeaking();
+              ctx.showTab('explore');
+              $('#panel-explore').dispatchEvent(new CustomEvent('explore:text', { detail: stop.city }));
+            },
+          },
+          `🔍 Explore ${stop.city}`,
+        ),
       ),
     );
   }

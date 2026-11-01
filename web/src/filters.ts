@@ -43,3 +43,47 @@ export function sitesInside(features: SiteFeature[], polygons: LngLat[][][]): Si
 export function topSites(features: SiteFeature[], limit: number): SiteFeature[] {
   return [...features].sort((a, b) => b.properties.score - a.properties.score || a.properties.name.localeCompare(b.properties.name)).slice(0, limit);
 }
+
+/** Find heritage sites within maxKm of a routed polyline. */
+export function sitesNearRoute(features: SiteFeature[], routeCoords: LngLat[], maxKm = 8, limit = 8): SiteFeature[] {
+  if (routeCoords.length === 0 || features.length === 0) return [];
+
+  const step = Math.max(1, Math.floor(routeCoords.length / 100));
+  const sampled: LngLat[] = [];
+  for (let i = 0; i < routeCoords.length; i += step) {
+    sampled.push(routeCoords[i]);
+  }
+  sampled.push(routeCoords[routeCoords.length - 1]);
+
+  const maxDeg = maxKm / 111.0;
+  const maxDegSq = maxDeg * maxDeg;
+
+  const nearby: { site: SiteFeature; distSq: number }[] = [];
+
+  for (const f of features) {
+    const [sx, sy] = f.geometry.coordinates;
+    let minDistSq = Infinity;
+
+    for (const [rx, ry] of sampled) {
+      const dx = (sx - rx) * Math.cos((sy * Math.PI) / 180);
+      const dy = sy - ry;
+      const d2 = dx * dx + dy * dy;
+      if (d2 < minDistSq) minDistSq = d2;
+      if (minDistSq <= maxDegSq) break;
+    }
+
+    if (minDistSq <= maxDegSq) {
+      nearby.push({ site: f, distSq: minDistSq });
+    }
+  }
+
+  // Prioritize caravanserais and UNESCO monuments
+  nearby.sort((a, b) => {
+    const aPri = (a.site.properties.category === 'caravanserai' ? 5 : 0) + (a.site.properties.unesco ? 3 : 0);
+    const bPri = (b.site.properties.category === 'caravanserai' ? 5 : 0) + (b.site.properties.unesco ? 3 : 0);
+    if (aPri !== bPri) return bPri - aPri;
+    return b.site.properties.score - a.site.properties.score;
+  });
+
+  return nearby.slice(0, limit).map((n) => n.site);
+}
