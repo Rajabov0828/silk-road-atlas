@@ -1,20 +1,46 @@
 import * as maplibregl from 'maplibre-gl';
-import type { Popup } from 'maplibre-gl';
+import type { Marker } from 'maplibre-gl';
 import { CATEGORY_META } from './config';
 import { clear, h, toast, wikipediaUrl } from './dom';
 import type { AppContext } from './context';
 import type { SiteFeature } from './types';
 import { getSiteSummary } from './wiki';
 
-let popup: Popup | null = null;
+let activeDrawer: HTMLElement | null = null;
+let activeMarker: Marker | null = null;
 const addressCache = new Map<string, string>();
 
+export function closeSiteDrawer(): void {
+  activeDrawer?.remove();
+  activeDrawer = null;
+  activeMarker?.remove();
+  activeMarker = null;
+  history.replaceState(null, '', location.pathname);
+}
+
 export function openSitePopup(ctx: AppContext, site: SiteFeature): void {
+  closeSiteDrawer();
+
   const p = site.properties;
   const meta = CATEGORY_META[p.category];
   const wiki = wikipediaUrl(p.wikipedia);
 
-  // Dynamic Elements
+  // 1. Pulsing ring marker on the map over the clicked monument
+  const ringEl = document.createElement('div');
+  ringEl.className = 'selected-pin-ring';
+  activeMarker = new maplibregl.Marker({ element: ringEl })
+    .setLngLat(site.geometry.coordinates)
+    .addTo(ctx.map);
+
+  // 2. Smoothly fly/pan to center the monument
+  ctx.map.flyTo({
+    center: site.geometry.coordinates,
+    zoom: Math.max(ctx.map.getZoom(), 14),
+    duration: 800,
+    essential: true,
+  });
+
+  // 3. Dynamic Elements
   const imageContainer = h(
     'div',
     { class: 'popup-image-container' },
@@ -44,54 +70,67 @@ export function openSitePopup(ctx: AppContext, site: SiteFeature): void {
     ctx.trip.has(p.id) ? '✓ In trip' : '+ Add to trip',
   );
 
-  const content = h(
-    'div',
-    { class: 'popup' },
-    imageContainer,
-    h(
-      'div',
-      { class: 'popup-body' },
-      h(
-        'div',
-        { class: 'popup-header' },
-        h('div', { class: 'popup-cat', style: `color:${meta.color}` }, `${meta.icon} ${meta.label.replace(/s$/, '')}`),
-        h('h3', {}, p.name),
-        p.name_en && p.name_en !== p.name ? h('div', { class: 'popup-subtitle' }, p.name_en) : null,
-      ),
-      h(
-        'div',
-        { class: 'chips' },
-        h('span', { class: 'chip' }, `📍 ${p.city}`),
-        p.unesco ? h('span', { class: 'chip unesco' }, '★ UNESCO World Heritage') : null,
-        p.start_date ? h('span', { class: 'chip' }, `🕰 Built: ${p.start_date}`) : null,
-      ),
-      description,
-      address,
-      h(
-        'div',
-        { class: 'links' },
-        wiki ? h('a', { href: wiki, target: '_blank', rel: 'noopener noreferrer' }, 'Wikipedia ↗') : null,
-        p.wikidata ? h('a', { href: `https://www.wikidata.org/wiki/${p.wikidata}`, target: '_blank', rel: 'noopener noreferrer' }, 'Wikidata ↗') : null,
-        p.website ? h('a', { href: p.website, target: '_blank', rel: 'noopener noreferrer nofollow' }, 'Website ↗') : null,
-        h('a', { href: `https://www.openstreetmap.org/${p.id}`, target: '_blank', rel: 'noopener noreferrer' }, 'OpenStreetMap ↗'),
-      ),
-      h(
-        'div',
-        { class: 'actions' },
-        tripBtn,
-        h('button', { class: 'btn small ghost', onclick: () => ctx.reachFrom(site.geometry.coordinates, p.name) }, '⏱ Drive-time area'),
-      ),
-    ),
+  const closeBtn = h(
+    'button',
+    {
+      class: 'drawer-close',
+      'aria-label': 'Close details',
+      onclick: () => closeSiteDrawer(),
+    },
+    '✕',
   );
 
-  popup?.remove();
-  const current = new maplibregl.Popup({ maxWidth: '380px', offset: 14, className: 'rich-site-popup' })
-    .setLngLat(site.geometry.coordinates)
-    .setDOMContent(content)
-    .addTo(ctx.map);
-  popup = current;
+  const actionsFooter = h(
+    'div',
+    { class: 'drawer-footer-actions' },
+    tripBtn,
+    h('button', { class: 'btn small ghost', onclick: () => ctx.reachFrom(site.geometry.coordinates, p.name) }, '⏱ Drive-time area'),
+  );
+
+  // 4. Build the non-clipping Floating Detail Drawer Card with sticky action bar
+  const content = h(
+    'div',
+    { class: 'site-card-drawer' },
+    closeBtn,
+    h(
+      'div',
+      { class: 'drawer-content' },
+      imageContainer,
+      h(
+        'div',
+        { class: 'popup-body' },
+        h(
+          'div',
+          { class: 'popup-header' },
+          h('div', { class: 'popup-cat', style: `color:${meta.color}` }, `${meta.icon} ${meta.label.replace(/s$/, '')}`),
+          h('h3', {}, p.name),
+          p.name_en && p.name_en !== p.name ? h('div', { class: 'popup-subtitle' }, p.name_en) : null,
+        ),
+        h(
+          'div',
+          { class: 'chips' },
+          h('span', { class: 'chip' }, `📍 ${p.city}`),
+          p.unesco ? h('span', { class: 'chip unesco' }, '★ UNESCO World Heritage') : null,
+          p.start_date ? h('span', { class: 'chip' }, `🕰 Built: ${p.start_date}`) : null,
+        ),
+        description,
+        address,
+        h(
+          'div',
+          { class: 'links' },
+          wiki ? h('a', { href: wiki, target: '_blank', rel: 'noopener noreferrer' }, 'Wikipedia ↗') : null,
+          p.wikidata ? h('a', { href: `https://www.wikidata.org/wiki/${p.wikidata}`, target: '_blank', rel: 'noopener noreferrer' }, 'Wikidata ↗') : null,
+          p.website ? h('a', { href: p.website, target: '_blank', rel: 'noopener noreferrer nofollow' }, 'Website ↗') : null,
+          h('a', { href: `https://www.openstreetmap.org/${p.id}`, target: '_blank', rel: 'noopener noreferrer' }, 'OpenStreetMap ↗'),
+        ),
+      ),
+    ),
+    actionsFooter,
+  );
+
+  ctx.map.getContainer().appendChild(content);
+  activeDrawer = content;
   history.replaceState(null, '', `#site=${encodeURIComponent(p.id)}`);
-  current.on('close', () => history.replaceState(null, '', location.pathname));
 
   // Asynchronously load real site photography and summary
   getSiteSummary(p).then((summary) => {
@@ -134,4 +173,13 @@ export function openSitePopup(ctx: AppContext, site: SiteFeature): void {
       address.textContent = `📍 ${p.city}, Uzbekistan`;
       console.warn('Reverse geocode note:', err.message);
     });
+}
+
+// Global escape listener to close drawer
+if (typeof window !== 'undefined') {
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && activeDrawer) {
+      closeSiteDrawer();
+    }
+  });
 }

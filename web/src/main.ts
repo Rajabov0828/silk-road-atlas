@@ -11,7 +11,7 @@ import { initExplore } from './panels/explore';
 import { initReach } from './panels/reach';
 import { initStory } from './panels/story';
 import { initTrip } from './panels/trip';
-import { openSitePopup } from './popup';
+import { closeSiteDrawer, openSitePopup } from './popup';
 import type { SiteCollection, SiteFeature } from './types';
 
 type Tab = 'explore' | 'story' | 'trip' | 'reach';
@@ -112,6 +112,12 @@ async function main(): Promise<void> {
     const id = e.features?.[0]?.properties?.id as string | undefined;
     const site = id ? byId.get(id) : undefined;
     if (site) ctx.openSite(site);
+  });
+  map.on('click', (e) => {
+    const hits = map.queryRenderedFeatures(e.point, { layers: ['site-points', 'clusters'] });
+    if (hits.length === 0) {
+      closeSiteDrawer();
+    }
   });
   for (const layer of ['clusters', 'site-points']) {
     map.on('mouseenter', layer, () => (map.getCanvas().style.cursor = 'pointer'));

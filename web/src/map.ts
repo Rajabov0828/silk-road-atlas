@@ -90,10 +90,10 @@ export function createMap(container: string, cfg: AppConfig): MLMap {
       [80, 49],
     ],
   });
-  map.addControl(new ThreeDControl(), 'top-right');
-  map.addControl(new maplibregl.NavigationControl({ visualizePitch: true }), 'top-right');
-  map.addControl(new maplibregl.ScaleControl({ unit: 'metric' }), 'bottom-right');
-  map.addControl(new maplibregl.FullscreenControl(), 'top-right');
+  map.addControl(new ThreeDControl(), 'top-left');
+  map.addControl(new maplibregl.NavigationControl({ visualizePitch: true }), 'top-left');
+  map.addControl(new maplibregl.FullscreenControl(), 'top-left');
+  map.addControl(new maplibregl.ScaleControl({ unit: 'metric' }), 'bottom-left');
   return map;
 }
 
