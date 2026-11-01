@@ -26,7 +26,7 @@ const FALLBACK_STYLE: StyleSpecification = {
 };
 
 export function createMap(container: string, cfg: AppConfig): MLMap {
-  const styleUrl = amazonStyleUrl(cfg, 'Standard', true);
+  const styleUrl = amazonStyleUrl(cfg, 'Standard', false);
   const map = new maplibregl.Map({
     container,
     style: styleUrl ?? FALLBACK_STYLE,
@@ -58,15 +58,15 @@ export function addLayers(map: MLMap): void {
     type: 'fill',
     source: SRC_ISO,
     paint: {
-      'fill-color': ['interpolate', ['linear'], ['get', 'minutes'], 15, '#22c55e', 30, '#eab308', 60, '#f97316', 120, '#ef4444'],
-      'fill-opacity': 0.18,
+      'fill-color': ['interpolate', ['linear'], ['get', 'minutes'], 15, '#16a34a', 30, '#ca8a04', 60, '#ea580c', 120, '#dc2626'],
+      'fill-opacity': 0.22,
     },
   });
   map.addLayer({
     id: 'iso-line',
     type: 'line',
     source: SRC_ISO,
-    paint: { 'line-color': '#fde68a', 'line-width': 1.2, 'line-opacity': 0.7 },
+    paint: { 'line-color': '#b45309', 'line-width': 1.8, 'line-opacity': 0.85 },
   });
 
   map.addSource(SRC_ROUTE, { type: 'geojson', data: empty, lineMetrics: true });
@@ -75,7 +75,7 @@ export function addLayers(map: MLMap): void {
     type: 'line',
     source: SRC_ROUTE,
     layout: { 'line-join': 'round', 'line-cap': 'round' },
-    paint: { 'line-color': '#0b0f17', 'line-width': 8, 'line-opacity': 0.8 },
+    paint: { 'line-color': '#ffffff', 'line-width': 8, 'line-opacity': 0.95 },
   });
   map.addLayer({
     id: 'route-line',
@@ -84,7 +84,7 @@ export function addLayers(map: MLMap): void {
     layout: { 'line-join': 'round', 'line-cap': 'round' },
     paint: {
       'line-width': 4.5,
-      'line-gradient': ['interpolate', ['linear'], ['line-progress'], 0, '#fbbf24', 0.5, '#f97316', 1, '#e11d48'],
+      'line-gradient': ['interpolate', ['linear'], ['line-progress'], 0, '#d97706', 0.5, '#ea580c', 1, '#dc2626'],
     },
   });
 
@@ -104,9 +104,9 @@ export function addLayers(map: MLMap): void {
     paint: {
       'circle-color': ['step', ['get', 'point_count'], '#b45309', 20, '#d97706', 100, '#f59e0b'],
       'circle-radius': ['step', ['get', 'point_count'], 16, 20, 22, 100, 30],
-      'circle-stroke-width': ['case', ['>', ['get', 'unesco'], 0], 3, 1.5],
-      'circle-stroke-color': ['case', ['>', ['get', 'unesco'], 0], '#fde047', '#fff7ed'],
-      'circle-opacity': 0.9,
+      'circle-stroke-width': ['case', ['>', ['get', 'unesco'], 0], 3, 2],
+      'circle-stroke-color': ['case', ['>', ['get', 'unesco'], 0], '#fbbf24', '#ffffff'],
+      'circle-opacity': 0.92,
     },
   });
   map.addLayer({
@@ -120,7 +120,7 @@ export function addLayers(map: MLMap): void {
       'text-font': ['Amazon Ember Bold', 'Noto Sans Bold'],
       'text-allow-overlap': true,
     },
-    paint: { 'text-color': '#1c1917' },
+    paint: { 'text-color': '#ffffff' },
   });
   map.addLayer({
     id: 'site-points',
@@ -129,9 +129,9 @@ export function addLayers(map: MLMap): void {
     filter: ['!', ['has', 'point_count']],
     paint: {
       'circle-color': categoryColorExpression(),
-      'circle-radius': ['interpolate', ['linear'], ['zoom'], 6, 4, 14, 8],
-      'circle-stroke-width': ['case', ['get', 'unesco'], 2.5, 1],
-      'circle-stroke-color': ['case', ['get', 'unesco'], '#fde047', '#0b0f17'],
+      'circle-radius': ['interpolate', ['linear'], ['zoom'], 6, 4.5, 14, 8.5],
+      'circle-stroke-width': ['case', ['get', 'unesco'], 2.5, 1.5],
+      'circle-stroke-color': ['case', ['get', 'unesco'], '#b45309', '#ffffff'],
     },
   });
   map.addLayer({
@@ -149,7 +149,7 @@ export function addLayers(map: MLMap): void {
       'symbol-sort-key': ['-', 0, ['get', 'score']],
       'text-optional': true,
     },
-    paint: { 'text-color': '#fef3c7', 'text-halo-color': '#0b0f17', 'text-halo-width': 1.4 },
+    paint: { 'text-color': '#0f172a', 'text-halo-color': '#ffffff', 'text-halo-width': 2.0 },
   });
 
   map.addSource(SRC_STOPS, { type: 'geojson', data: empty });
@@ -157,7 +157,7 @@ export function addLayers(map: MLMap): void {
     id: 'stops',
     type: 'circle',
     source: SRC_STOPS,
-    paint: { 'circle-radius': 11, 'circle-color': '#fbbf24', 'circle-stroke-color': '#0b0f17', 'circle-stroke-width': 2 },
+    paint: { 'circle-radius': 11, 'circle-color': '#d97706', 'circle-stroke-color': '#ffffff', 'circle-stroke-width': 2.5 },
   });
   map.addLayer({
     id: 'stops-label',
@@ -169,7 +169,7 @@ export function addLayers(map: MLMap): void {
       'text-font': ['Amazon Ember Bold', 'Noto Sans Bold'],
       'text-allow-overlap': true,
     },
-    paint: { 'text-color': '#0b0f17' },
+    paint: { 'text-color': '#ffffff' },
   });
 }
 
