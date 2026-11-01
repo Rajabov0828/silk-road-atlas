@@ -4,6 +4,8 @@
 > **AWS Location Services Hackathon Project**  
 > *"What took a Silk Road camel caravan a month takes a modern car an afternoon."*
 
+![Silk Road Atlas: Interactive Spatial Heritage & Journey Explorer](live_popup_screenshot.png)
+
 Silk Road Atlas puts **2,024 historical and cultural heritage sites** across Uzbekistan on an interactive, explorable map powered by **Amazon Location Service**, **AWS Lambda**, **Amazon CloudFront**, and **Amazon S3**.
 
 ---
