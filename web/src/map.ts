@@ -1,7 +1,10 @@
 import * as maplibregl from 'maplibre-gl';
 import type { GeoJSONSource, Map as MLMap, StyleSpecification } from 'maplibre-gl';
+import workerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?url';
 import { CATEGORY_META, UZ_BOUNDS, amazonStyleUrl, type AppConfig } from './config';
 import type { Category, LngLat, RouteResult, SiteFeature } from './types';
+
+maplibregl.setWorkerUrl(workerUrl);
 
 export const SRC_SITES = 'sites';
 export const SRC_ROUTE = 'route';

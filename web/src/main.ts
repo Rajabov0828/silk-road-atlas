@@ -52,7 +52,17 @@ async function main(): Promise<void> {
 
   const map = createMap('map', cfg);
   const api = createApi(cfg.apiBase);
-  const [data] = await Promise.all([loadSites(), new Promise<void>((resolve) => map.once('load', () => resolve()))]);
+  const [data] = await Promise.all([
+    loadSites(),
+    new Promise<void>((resolve) => {
+      map.once('load', () => resolve());
+      map.once('error', (e) => {
+        console.warn('Map notice:', e);
+        resolve();
+      });
+      setTimeout(() => resolve(), 3000);
+    }),
+  ]);
   const byId = new Map<string, SiteFeature>(data.features.map((f) => [f.properties.id, f]));
 
   addLayers(map);
