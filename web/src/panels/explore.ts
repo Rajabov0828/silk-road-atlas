@@ -251,9 +251,13 @@ export function initExplore(ctx: AppContext): void {
           },
         },
         h('span', { class: 'dot', style: `background:${meta.color}` }),
-        h('span', { class: 'site-name' }, p.name),
-        p.unesco ? h('span', { class: 'gold', title: 'UNESCO World Heritage' }, '★') : null,
-        h('span', { class: 'muted small' }, p.city),
+        h(
+          'div',
+          { class: 'site-info' },
+          h('span', { class: 'site-name' }, p.name),
+          h('span', { class: 'site-sub' }, `${meta.label.replace(/s$/, '')} · ${p.city}`),
+        ),
+        p.unesco ? h('span', { class: 'site-unesco-star', title: 'UNESCO World Heritage' }, '★') : null,
       ),
     );
   }

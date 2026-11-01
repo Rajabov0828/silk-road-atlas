@@ -39,9 +39,24 @@ function renderStats(data: SiteCollection): void {
   const caravanserais = data.metadata.by_category.caravanserai ?? 0;
   const el = $('#stats');
   el.append(
-    h('div', {}, h('strong', {}, data.metadata.count.toLocaleString()), h('span', {}, 'heritage sites')),
-    h('div', {}, h('strong', {}, String(unesco)), h('span', {}, 'in UNESCO zones')),
-    h('div', {}, h('strong', {}, String(caravanserais)), h('span', {}, 'caravanserais')),
+    h(
+      'div',
+      { class: 'stat-box' },
+      h('div', { class: 'stat-header' }, h('span', { class: 'stat-icon' }, '🏛️'), h('strong', {}, data.metadata.count.toLocaleString())),
+      h('span', { class: 'stat-label' }, 'Heritage Sites'),
+    ),
+    h(
+      'div',
+      { class: 'stat-box' },
+      h('div', { class: 'stat-header' }, h('span', { class: 'stat-icon' }, '★'), h('strong', {}, String(unesco))),
+      h('span', { class: 'stat-label' }, 'In UNESCO Zones'),
+    ),
+    h(
+      'div',
+      { class: 'stat-box' },
+      h('div', { class: 'stat-header' }, h('span', { class: 'stat-icon' }, '🐫'), h('strong', {}, String(caravanserais))),
+      h('span', { class: 'stat-label' }, 'Caravanserais'),
+    ),
   );
   el.title = `OpenStreetMap snapshot: ${data.metadata.osm_timestamp}`;
 }
