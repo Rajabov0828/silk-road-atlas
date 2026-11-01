@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Silk Road Atlas: explore 2,000+ heritage sites across Uzbekistan and compare camel-caravan travel times with modern roads, powered by Amazon Location Service." />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://*.amazonaws.com; font-src 'self' data:; connect-src 'self' https://*.amazonaws.com https://demotiles.maplibre.org; worker-src 'self' blob:; child-src blob:; frame-ancestors 'none'; base-uri 'self'; form-action 'self'" />
+    <title>Silk Road Atlas — Uzbekistan heritage on a map</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐫</text></svg>" />
+  </head>
+  <body>
+    <aside id="sidebar" class="sidebar">
+      <header class="brand">
+        <button id="toggle-sidebar" class="icon-btn mobile-only" aria-label="Toggle panel">☰</button>
+        <div>
+          <h1>🐫 Silk Road Atlas</h1>
+          <p class="tagline">What took a caravan a month takes a car an afternoon.</p>
+        </div>
+      </header>
+
+      <div id="stats" class="stats" aria-live="polite"></div>
+
+      <nav class="tabs" role="tablist">
+        <button role="tab" data-tab="explore" class="active">Explore</button>
+        <button role="tab" data-tab="story">Caravan story</button>
+        <button role="tab" data-tab="trip">Trip <span id="trip-count" class="badge">0</span></button>
+        <button role="tab" data-tab="reach">Reach</button>
+      </nav>
+
+      <section id="panel-explore" class="panel active" role="tabpanel"></section>
+      <section id="panel-story" class="panel" role="tabpanel"></section>
+      <section id="panel-trip" class="panel" role="tabpanel"></section>
+      <section id="panel-reach" class="panel" role="tabpanel"></section>
+
+      <footer class="footer">
+        Data © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap contributors</a> (ODbL).
+        Maps, routing &amp; places by <strong>Amazon Location Service</strong>.
+        <a href="https://github.com/" id="repo-link" target="_blank" rel="noopener noreferrer">Source code</a>
+      </footer>
+    </aside>
+    <main id="map" aria-label="Map of heritage sites in Uzbekistan"></main>
+    <div id="toast" class="toast" role="status"></div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

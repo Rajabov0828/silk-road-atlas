@@ -1,0 +1,22 @@
+# Dependencies
+node_modules/
+.venv/
+__pycache__/
+*.pyc
+
+# Builds
+dist/
+build/
+.cache/
+cdk.out/
+outputs.json
+
+# Environment
+.env.local
+.env.*.local
+*.pem
+
+# Editor
+.vscode/
+.idea/
+*.swp
