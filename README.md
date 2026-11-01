@@ -29,7 +29,7 @@ Silk Road Atlas puts **2,024 historical and cultural heritage sites** across Uzb
   - Zero framework bloat: Vite + TypeScript + MapLibre GL JS with sub-second page loads.
   - No `innerHTML` usage anywhere to eliminate DOM-based XSS risks.
   - Interactive category chips, instant quick filters, and deep-linkable URLs (`#site=way/185036984`).
-- **Interactive Audio Guide**: Browser-native Web Speech API voice synthesis provides educational museum-quality audio tours for every monument and caravan leg.
+- **Floating Inspector Drawer & Live Photography**: Sleek non-clipping inspector card with high-resolution photography, Wikidata summaries, and Amazon Location reverse-geocoded addresses.
 - **Comprehensive Automated Testing**:
   - 16 backend unit & integration tests covering routing, waypoint optimization, isolines, and validation error branches.
   - 10 frontend unit tests verifying distance formatting, caravan calculations, along-route spatial filters, and point-in-polygon checks.
