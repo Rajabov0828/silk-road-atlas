@@ -47,10 +47,10 @@ Record your screen showing [https://d3fx98y0gpu4w7.cloudfront.net](https://d3fx9
 - **Narration:**  
   *"Welcome to Silk Road Atlas. For centuries, the Silk Road through Uzbekistan was the world's most vital trading artery. Today, we put over 2,000 cultural heritage sites—including 339 UNESCO World Heritage landmarks and ancient caravanserais—on an interactive map powered by Amazon Location Service."*
 
-### ⏱ 0:30 – 1:05 | Exploration, Photos, 3D Pitch & Audio Guide
-- **Action:** Click the `★ UNESCO Only` quick chip, then click on `Nadir Devon Begi Madrasah` in Bukhara. Show the popup: point to the photo, the UNESCO badge, and click the `3D` button in the top-right corner to show the camera tilt. Click `🎧 Audio Guide` so the browser voice begins reading.
+### ⏱ 0:30 – 1:05 | Exploration, Photos, 3D Pitch & Floating Inspector Drawer
+- **Action:** Click the `★ UNESCO Only` quick chip, then click on `Nadir Devon Begi Madrasah` in Bukhara. Show the newly designed floating inspector card: point to the photo, the UNESCO badge, metadata chips, and the reverse-geocoded address. Click the `3D` button in the top-left corner to show the camera tilt.
 - **Narration:**  
-  *"Exploring the map is instantaneous. Each landmark features verified high-resolution photography, Amazon Location reverse-geocoded addresses, and an interactive audio guide built with speech synthesis. With one click on our 3D button, the camera tilts to a 55-degree perspective, giving travelers an immersive bird’s-eye view of ancient oases."*
+  *"Exploring the map is instantaneous. Each landmark features verified high-resolution photography, Amazon Location reverse-geocoded addresses, and deep historical metadata. With one click on our 3D button, the camera tilts to a 55-degree perspective, giving travelers an immersive bird’s-eye view of ancient oases without any popup clutter."*
 
 ### ⏱ 1:05 – 1:45 | Caravan Story Mode & Amazon Location Routing
 - **Action:** Click the `Caravan story` tab. Click `Start the journey →`. Advance to Stop 1 (Margilan), Stop 2 (Kokand), Stop 4 (Samarkand). Highlight the route line on the map and the stats: *"Road distance: 273 km | By car today: 3 h 33 min | By caravan: ≈ 9 days (60× speedup)"*.
