@@ -6,6 +6,8 @@ export interface StoryStop {
   era: string;
   text: string;
   zoom: number;
+  imageUrl: string;
+  imageCaption: string;
 }
 
 /**
@@ -16,50 +18,64 @@ export const STORY: StoryStop[] = [
   {
     city: 'Margilan',
     position: [71.7247, 40.4711],
-    era: 'Fergana Valley · silk',
-    text: 'The journey starts where the silk is made. Margilan has woven silk for centuries and is still famous for khan-atlas ikat. Fergana horses and fabric went west from here.',
+    era: 'Fergana Valley · Silk Capital',
+    text: 'The journey starts where the silk is made. Margilan has woven silk for centuries and is internationally celebrated for khan-atlas ikat. Celebrated Fergana horses and handmade fabrics journeyed west from here along ancient trails.',
     zoom: 11,
+    imageUrl: 'https://commons.wikimedia.org/wiki/Special:FilePath/Khonakhan_Mosque,_Margilan_(496142).jpg?width=640',
+    imageCaption: 'Historic Khonakhan Mosque & Silk Centre, Margilan',
   },
   {
     city: 'Kokand',
     position: [70.9425, 40.5286],
-    era: 'Kokand Khanate · 18th–19th c.',
-    text: 'Kokand was the capital of the Kokand Khanate. Caravans leaving the valley passed here on the way to the Kamchik pass and the plains beyond.',
+    era: 'Kokand Khanate · 18th–19th Century',
+    text: 'Kokand was the grand capital of the Kokand Khanate. Caravans leaving the lush valley passed through its bustling bazaars on their way across the Kamchik Pass to the great plains beyond.',
     zoom: 12,
+    imageUrl: 'https://commons.wikimedia.org/wiki/Special:FilePath/Palace_of_Khudayar_Khan.jpg?width=640',
+    imageCaption: 'Palace of Khudayar Khan (Pearl of Kokand)',
   },
   {
     city: 'Tashkent',
     position: [69.2797, 41.3111],
-    era: 'Ancient Chach · crossroads',
-    text: 'Known in early sources as Chach or Shash, Tashkent sat where steppe routes met the oasis road. The Khast Imam complex keeps one of the oldest Qurans in the world.',
+    era: 'Ancient Chach · Eurasian Crossroads',
+    text: 'Known in early chronicles as Chach or Shash, Tashkent commanded the crossroads where Eurasian nomadic steppe routes met the oasis caravan roads. The Hazrati Imam complex preserves one of the world’s oldest Qurans (the Uthman Quran).',
     zoom: 11,
+    imageUrl: 'https://commons.wikimedia.org/wiki/Special:FilePath/Barakhan_Madrasah_Tashkent.jpg?width=640',
+    imageCaption: 'Hazrati Imam Complex & Barakhan Madrasah, Tashkent',
   },
   {
     city: 'Samarkand',
     position: [66.9757, 39.6548],
-    era: 'Sogdian Marakanda · Timur’s capital',
-    text: 'Sogdian merchants ran Silk Road trade from here, and Timur later made it his capital. The Registan’s three madrasas are part of the UNESCO site “Samarkand – Crossroad of Cultures”.',
+    era: 'Sogdian Marakanda · Timur’s Capital',
+    text: 'Sogdian merchants orchestrated transcontinental Silk Road trade from here for centuries, and Timur later crowned it the imperial capital. The iconic Registan square features three monumental madrasas inscribed as UNESCO World Heritage.',
     zoom: 13,
+    imageUrl: 'https://commons.wikimedia.org/wiki/Special:FilePath/RegistanSquare_Samarkand.jpg?width=640',
+    imageCaption: 'Registan Square (Sher-Dor & Ulugh Beg Madrasas)',
   },
   {
     city: 'Shahrisabz',
     position: [66.8342, 39.0578],
-    era: 'Birthplace of Timur',
-    text: 'Timur was born here. The ruins of his Ak-Saray palace are part of a UNESCO World Heritage site.',
+    era: 'Birthplace of Timur · UNESCO Heritage',
+    text: 'Amir Timur was born in this ancient city. The monumental turquoise mosaic towers of his Ak-Saray Palace and the Dorut Tilavat complex form part of a UNESCO World Heritage site.',
     zoom: 13,
+    imageUrl: 'https://commons.wikimedia.org/wiki/Special:FilePath/Kok_Gumbaz_Mosque_and_panorama_of_Shahrisabz_2026.jpg?width=640',
+    imageCaption: 'Kok Gumbaz Mosque & Historic Centre of Shakhrisyabz',
   },
   {
     city: 'Bukhara',
     position: [64.4286, 39.7747],
-    era: 'Holy Bukhara · UNESCO 1993',
-    text: 'Bukhara’s trading domes, madrasas and the 12th-century Kalyan minaret made it a major stop. Its historic centre has hundreds of protected monuments.',
+    era: 'Noble Bukhara · UNESCO 1993',
+    text: 'Bukhara’s vaulted multi-domed trading bazaars, hundreds of madrasas, and the majestic 12th-century Kalyan Minaret made it an intellectual and mercantile beacon of the Islamic world.',
     zoom: 13,
+    imageUrl: 'https://commons.wikimedia.org/wiki/Special:FilePath/Poi_Kalon.jpg?width=640',
+    imageCaption: 'Po-i-Kalyan Mosque Complex and Kalyan Minaret',
   },
   {
     city: 'Khiva',
     position: [60.3639, 41.3783],
     era: 'Itchan Kala · UNESCO 1990',
-    text: 'The walled inner town of Khiva was the last big stop before the Karakum desert and the road to Persia. Caravans took on water and supplies here before the crossing.',
+    text: 'The fairy-tale walled citadel of Itchan Kala was the last vital oasis before the vast Karakum desert and the route into Persia. Caravans refilled their waterskins and stocked supplies here before the perilous desert crossing.',
     zoom: 14,
+    imageUrl: 'https://commons.wikimedia.org/wiki/Special:FilePath/Islam_Khodja_Madrasa_01.jpg?width=640',
+    imageCaption: 'Islam Khodja Minaret & Itchan Kala Walled Oasis',
   },
 ];

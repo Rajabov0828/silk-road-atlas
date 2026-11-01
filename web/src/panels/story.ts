@@ -74,9 +74,17 @@ export function initStory(ctx: AppContext): void {
     ctx.map.flyTo({ center: stop.position, zoom: stop.zoom, speed: 0.8, curve: 1.6, essential: true });
 
     const leg = r && step > 0 ? r.legs[step - 1] : null;
+    const imgCard = h(
+      'div',
+      { class: 'story-image-card' },
+      h('img', { src: stop.imageUrl, alt: stop.city, loading: 'lazy' }),
+      h('div', { class: 'story-image-badge' }, stop.imageCaption),
+    );
+
     body.append(
       h('div', { class: 'eyebrow' }, `Stop ${step + 1} of ${STORY.length} · ${stop.era}`),
       h('h2', {}, stop.city),
+      imgCard,
       h('p', {}, stop.text),
       leg
         ? h(

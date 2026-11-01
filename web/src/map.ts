@@ -58,7 +58,7 @@ export function addLayers(map: MLMap): void {
     type: 'fill',
     source: SRC_ISO,
     paint: {
-      'fill-color': ['interpolate', ['linear'], ['get', 'minutes'], 15, '#16a34a', 30, '#ca8a04', 60, '#ea580c', 120, '#dc2626'],
+      'fill-color': ['interpolate', ['linear'], ['get', 'minutes'], 15, '#0d9488', 30, '#0284c7', 60, '#2563eb', 120, '#4338ca'],
       'fill-opacity': 0.22,
     },
   });
@@ -66,7 +66,7 @@ export function addLayers(map: MLMap): void {
     id: 'iso-line',
     type: 'line',
     source: SRC_ISO,
-    paint: { 'line-color': '#b45309', 'line-width': 1.8, 'line-opacity': 0.85 },
+    paint: { 'line-color': '#0284c7', 'line-width': 1.8, 'line-opacity': 0.85 },
   });
 
   map.addSource(SRC_ROUTE, { type: 'geojson', data: empty, lineMetrics: true });
@@ -84,7 +84,7 @@ export function addLayers(map: MLMap): void {
     layout: { 'line-join': 'round', 'line-cap': 'round' },
     paint: {
       'line-width': 4.5,
-      'line-gradient': ['interpolate', ['linear'], ['line-progress'], 0, '#d97706', 0.5, '#ea580c', 1, '#dc2626'],
+      'line-gradient': ['interpolate', ['linear'], ['line-progress'], 0, '#06b6d4', 0.5, '#2563eb', 1, '#1e40af'],
     },
   });
 
@@ -102,10 +102,10 @@ export function addLayers(map: MLMap): void {
     source: SRC_SITES,
     filter: ['has', 'point_count'],
     paint: {
-      'circle-color': ['step', ['get', 'point_count'], '#b45309', 20, '#d97706', 100, '#f59e0b'],
+      'circle-color': ['step', ['get', 'point_count'], '#1d4ed8', 20, '#2563eb', 100, '#0284c7'],
       'circle-radius': ['step', ['get', 'point_count'], 16, 20, 22, 100, 30],
       'circle-stroke-width': ['case', ['>', ['get', 'unesco'], 0], 3, 2],
-      'circle-stroke-color': ['case', ['>', ['get', 'unesco'], 0], '#fbbf24', '#ffffff'],
+      'circle-stroke-color': ['case', ['>', ['get', 'unesco'], 0], '#38bdf8', '#ffffff'],
       'circle-opacity': 0.92,
     },
   });
@@ -131,7 +131,7 @@ export function addLayers(map: MLMap): void {
       'circle-color': categoryColorExpression(),
       'circle-radius': ['interpolate', ['linear'], ['zoom'], 6, 4.5, 14, 8.5],
       'circle-stroke-width': ['case', ['get', 'unesco'], 2.5, 1.5],
-      'circle-stroke-color': ['case', ['get', 'unesco'], '#b45309', '#ffffff'],
+      'circle-stroke-color': ['case', ['get', 'unesco'], '#1d4ed8', '#ffffff'],
     },
   });
   map.addLayer({
@@ -157,7 +157,7 @@ export function addLayers(map: MLMap): void {
     id: 'stops',
     type: 'circle',
     source: SRC_STOPS,
-    paint: { 'circle-radius': 11, 'circle-color': '#d97706', 'circle-stroke-color': '#ffffff', 'circle-stroke-width': 2.5 },
+    paint: { 'circle-radius': 11, 'circle-color': '#1d4ed8', 'circle-stroke-color': '#ffffff', 'circle-stroke-width': 2.5 },
   });
   map.addLayer({
     id: 'stops-label',

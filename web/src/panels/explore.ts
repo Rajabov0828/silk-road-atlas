@@ -18,7 +18,32 @@ export function initExplore(ctx: AppContext): void {
   const counts = new Map<Category, number>();
   ctx.sites.forEach((s) => counts.set(s.properties.category, (counts.get(s.properties.category) ?? 0) + 1));
 
-  const searchInput = h('input', { type: 'search', placeholder: 'Search sites or any place in Uzbekistan…', maxlength: 120, 'aria-label': 'Search' });
+  const searchInput = h('input', {
+    type: 'text',
+    placeholder: 'Search sites or any place in Uzbekistan…',
+    maxlength: 120,
+    'aria-label': 'Search',
+  }) as HTMLInputElement;
+
+  const clearBtn = h(
+    'button',
+    {
+      class: 'search-clear',
+      type: 'button',
+      title: 'Clear search',
+      style: 'display:none',
+      onclick: () => {
+        searchInput.value = '';
+        state.text = '';
+        clearBtn.style.display = 'none';
+        clear(placeResults);
+        refresh(false);
+      },
+    },
+    '✕',
+  );
+
+  const searchWrap = h('div', { class: 'search-wrap' }, searchInput, clearBtn);
   const placeResults = h('div', { class: 'place-results' });
   const resultInfo = h('div', { class: 'muted small' });
   const list = h('ul', { class: 'site-list' });
@@ -36,7 +61,14 @@ export function initExplore(ctx: AppContext): void {
     ...cities.map((c) => h('option', { value: c }, c)),
   );
 
-  const unesco = h('input', { type: 'checkbox', onchange: () => ((state.unescoOnly = unesco.checked), refresh(true)) });
+  const unesco = h('input', {
+    type: 'checkbox',
+    onchange: () => {
+      state.unescoOnly = unesco.checked;
+      syncQuickFilters();
+      refresh(true);
+    },
+  }) as HTMLInputElement;
 
   const catButtons = allCategories.map((cat) => {
     const meta = CATEGORY_META[cat];
@@ -52,6 +84,7 @@ export function initExplore(ctx: AppContext): void {
           const on = state.categories.has(cat);
           btn.classList.toggle('active', on);
           btn.setAttribute('aria-pressed', String(on));
+          syncQuickFilters();
           refresh(false);
         },
       },
@@ -61,31 +94,79 @@ export function initExplore(ctx: AppContext): void {
     return btn;
   });
 
-  const onlyCaravan = h(
-    'button',
-    {
-      class: 'btn small ghost',
-      onclick: () => {
-        state.categories = new Set(['caravanserai']);
-        catButtons.forEach((b, i) => b.classList.toggle('active', allCategories[i] === 'caravanserai'));
-        refresh(true);
-        toast('Showing caravanserais — the roadside inns where Silk Road caravans rested.');
-      },
-    },
-    '🐫 Only caravanserais',
-  );
-  const allBtn = h(
-    'button',
-    {
-      class: 'btn small ghost',
-      onclick: () => {
-        state.categories = new Set(allCategories);
-        catButtons.forEach((b) => b.classList.add('active'));
-        refresh(false);
-      },
-    },
-    'Show all',
-  );
+  // Quick filter chips
+  const quickFiltersContainer = h('div', { class: 'quick-filters' });
+  const chipAll = h('button', { class: 'quick-chip active', type: 'button' }, 'All Sites');
+  const chipUnesco = h('button', { class: 'quick-chip', type: 'button' }, '★ UNESCO Only');
+  const chipCaravan = h('button', { class: 'quick-chip', type: 'button' }, '🐫 Caravanserais');
+  const chipMadrasas = h('button', { class: 'quick-chip', type: 'button' }, '📜 Madrasahs');
+  const chipMosques = h('button', { class: 'quick-chip', type: 'button' }, '🕌 Mosques');
+  const chipMausoleums = h('button', { class: 'quick-chip', type: 'button' }, '🏛️ Mausoleums');
+
+  chipAll.onclick = () => {
+    state.categories = new Set(allCategories);
+    state.unescoOnly = false;
+    unesco.checked = false;
+    catButtons.forEach((b) => b.classList.add('active'));
+    syncQuickFilters();
+    refresh(false);
+  };
+
+  chipUnesco.onclick = () => {
+    state.unescoOnly = !state.unescoOnly;
+    unesco.checked = state.unescoOnly;
+    syncQuickFilters();
+    refresh(true);
+  };
+
+  chipCaravan.onclick = () => {
+    state.categories = new Set(['caravanserai']);
+    state.unescoOnly = false;
+    unesco.checked = false;
+    catButtons.forEach((b, i) => b.classList.toggle('active', allCategories[i] === 'caravanserai'));
+    syncQuickFilters();
+    refresh(true);
+    toast('Showing roadside caravanserais where Silk Road travelers and camel trains rested.');
+  };
+
+  chipMadrasas.onclick = () => {
+    state.categories = new Set(['madrasa']);
+    state.unescoOnly = false;
+    unesco.checked = false;
+    catButtons.forEach((b, i) => b.classList.toggle('active', allCategories[i] === 'madrasa'));
+    syncQuickFilters();
+    refresh(true);
+  };
+
+  chipMosques.onclick = () => {
+    state.categories = new Set(['mosque']);
+    state.unescoOnly = false;
+    unesco.checked = false;
+    catButtons.forEach((b, i) => b.classList.toggle('active', allCategories[i] === 'mosque'));
+    syncQuickFilters();
+    refresh(true);
+  };
+
+  chipMausoleums.onclick = () => {
+    state.categories = new Set(['mausoleum']);
+    state.unescoOnly = false;
+    unesco.checked = false;
+    catButtons.forEach((b, i) => b.classList.toggle('active', allCategories[i] === 'mausoleum'));
+    syncQuickFilters();
+    refresh(true);
+  };
+
+  quickFiltersContainer.append(chipAll, chipUnesco, chipCaravan, chipMadrasas, chipMosques, chipMausoleums);
+
+  function syncQuickFilters(): void {
+    const isAll = state.categories.size === allCategories.length && !state.unescoOnly;
+    chipAll.classList.toggle('active', isAll);
+    chipUnesco.classList.toggle('active', state.unescoOnly);
+    chipCaravan.classList.toggle('active', state.categories.size === 1 && state.categories.has('caravanserai'));
+    chipMadrasas.classList.toggle('active', state.categories.size === 1 && state.categories.has('madrasa'));
+    chipMosques.classList.toggle('active', state.categories.size === 1 && state.categories.has('mosque'));
+    chipMausoleums.classList.toggle('active', state.categories.size === 1 && state.categories.has('mausoleum'));
+  }
 
   const form = h(
     'form',
@@ -96,12 +177,13 @@ export function initExplore(ctx: AppContext): void {
         void searchPlaces();
       },
     },
-    searchInput,
+    searchWrap,
     h('button', { class: 'btn', type: 'submit', title: 'Search with Amazon Location Places' }, '🔎'),
   );
 
   let debounce: ReturnType<typeof setTimeout> | undefined;
   searchInput.addEventListener('input', () => {
+    clearBtn.style.display = searchInput.value ? 'block' : 'none';
     clearTimeout(debounce);
     debounce = setTimeout(() => {
       state.text = searchInput.value;
@@ -112,9 +194,9 @@ export function initExplore(ctx: AppContext): void {
   panel.append(
     form,
     placeResults,
+    quickFiltersContainer,
     h('div', { class: 'row' }, citySelect, h('label', { class: 'toggle' }, unesco, ' UNESCO only')),
     h('div', { class: 'cats' }, ...catButtons),
-    h('div', { class: 'row' }, onlyCaravan, allBtn),
     resultInfo,
     list,
   );
@@ -190,6 +272,7 @@ export function initExplore(ctx: AppContext): void {
   // Allow other panels to reset the free-text filter.
   panel.addEventListener('explore:text', (e) => {
     searchInput.value = (e as CustomEvent<string>).detail;
+    clearBtn.style.display = searchInput.value ? 'block' : 'none';
     state.text = normalize(searchInput.value);
     refresh(true);
   });

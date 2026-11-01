@@ -15,8 +15,11 @@ export function openSitePopup(ctx: AppContext, site: SiteFeature): void {
   const wiki = wikipediaUrl(p.wikipedia);
 
   // Dynamic Elements
-  const imageContainer = h('div', { class: 'popup-image-container' },
-    h('div', { class: 'popup-image-skeleton' }, 'Loading photo…')
+  const imageContainer = h(
+    'div',
+    { class: 'popup-image-container' },
+    h('div', { class: 'popup-image-skeleton' }, 'Loading photo…'),
+    p.unesco ? h('div', { class: 'popup-unesco-pill' }, '★ UNESCO World Heritage') : null,
   );
 
   const address = h('div', { class: 'popup-address muted' }, 'Looking up address via Amazon Location…');
@@ -59,7 +62,7 @@ export function openSitePopup(ctx: AppContext, site: SiteFeature): void {
         'div',
         { class: 'chips' },
         h('span', { class: 'chip' }, `📍 ${p.city}`),
-        p.unesco ? h('span', { class: 'chip gold' }, '★ UNESCO World Heritage') : null,
+        p.unesco ? h('span', { class: 'chip unesco' }, '★ UNESCO World Heritage') : null,
         p.start_date ? h('span', { class: 'chip' }, `🕰 Built: ${p.start_date}`) : null,
       ),
       description,
@@ -100,6 +103,9 @@ export function openSitePopup(ctx: AppContext, site: SiteFeature): void {
       img.className = 'popup-photo';
       img.loading = 'lazy';
       imageContainer.appendChild(img);
+    }
+    if (p.unesco) {
+      imageContainer.appendChild(h('div', { class: 'popup-unesco-pill' }, '★ UNESCO World Heritage'));
     }
     if (summary.extract) {
       description.textContent = summary.extract;

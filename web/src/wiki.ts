@@ -7,52 +7,79 @@ export interface WikiSummary {
   pageUrl: string | null;
 }
 
-/** Authentic curated high-resolution photography for Uzbekistan Silk Road heritage categories. */
+/** Authentic curated high-resolution photography for Uzbekistan Silk Road heritage categories via Wikimedia Commons Special:FilePath. */
 const CATEGORY_FALLBACK_IMAGES: Record<Category, { imageUrl: string; caption: string }> = {
   caravanserai: {
-    imageUrl:
-      'https://thumb.wikimedia.org/wikipedia/commons/thumb/6/64/Rabat-i_Malik_caravanserai_2_%28cropped_and_retouched%29.jpg/640px-Rabat-i_Malik_caravanserai_2_%28cropped_and_retouched%29.jpg',
+    imageUrl: 'https://commons.wikimedia.org/wiki/Special:FilePath/Rabat-i_Malik_caravanserai_2_(cropped_and_retouched).jpg?width=640',
     caption: 'Ancient Rabat-i Malik Caravanserai ruins, Navoi Region',
   },
   madrasa: {
-    imageUrl:
-      'https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8c/RegistanSquare_Samarkand.jpg/640px-RegistanSquare_Samarkand.jpg',
+    imageUrl: 'https://commons.wikimedia.org/wiki/Special:FilePath/RegistanSquare_Samarkand.jpg?width=640',
     caption: 'Sher-Dor and Ulugh Beg Madrasas at Registan Square, Samarkand',
   },
   mausoleum: {
-    imageUrl:
-      'https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5d/ShrineofAmirTimur.jpg/640px-ShrineofAmirTimur.jpg',
+    imageUrl: 'https://commons.wikimedia.org/wiki/Special:FilePath/ShrineofAmirTimur.jpg?width=640',
     caption: 'Gur-e-Amir Mausoleum, burial place of Amir Timur, Samarkand',
   },
   mosque: {
-    imageUrl:
-      'https://thumb.wikimedia.org/wikipedia/commons/thumb/9/92/Poi_Kalon.jpg/640px-Poi_Kalon.jpg',
+    imageUrl: 'https://commons.wikimedia.org/wiki/Special:FilePath/Poi_Kalon.jpg?width=640',
     caption: 'Po-i-Kalyan Mosque complex and Kalyan Minaret, Bukhara',
   },
   fortress: {
-    imageUrl:
-      'https://thumb.wikimedia.org/wikipedia/commons/thumb/6/69/Ark_of_Bukhara_2023.9.jpg/640px-Ark_of_Bukhara_2023.9.jpg',
+    imageUrl: 'https://commons.wikimedia.org/wiki/Special:FilePath/Ark_of_Bukhara_2023.9.jpg?width=640',
     caption: 'Massive brick walls of the Ark Fortress, Bukhara',
   },
   archaeology: {
-    imageUrl:
-      'https://thumb.wikimedia.org/wikipedia/commons/thumb/d/db/Afrasiab_-_details_from_The_Ambassadors%27_Painting.JPG/640px-Afrasiab_-_details_from_The_Ambassadors%27_Painting.JPG',
+    imageUrl: 'https://commons.wikimedia.org/wiki/Special:FilePath/Afrasiyab_museum.jpg?width=640',
     caption: 'Ancient Afrasiyab archaeological settlement murals, Samarkand',
   },
   museum: {
-    imageUrl:
-      'https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c3/Islam_Khodja_Madrasa_01.jpg/640px-Islam_Khodja_Madrasa_01.jpg',
+    imageUrl: 'https://commons.wikimedia.org/wiki/Special:FilePath/Palace_of_Khudayar_Khan.jpg?width=640',
     caption: 'Historic museum complex inside the walled city of Itchan Kala, Khiva',
   },
   monument: {
-    imageUrl:
-      'https://thumb.wikimedia.org/wikipedia/commons/thumb/a/aa/%D0%9A%D0%BE%D0%BA%D0%B0%D0%BD%D0%B4._%D0%A0%D1%83%D1%81%D1%81%D0%BA%D0%BE-%D0%90%D0%B7%D0%B8%D0%B0%D1%82%D1%81%D0%BA%D0%B8%D0%B9_%D0%B1%D0%B0%D0%BD%D0%BA_01.jpg/640px-%D0%9A%D0%BE%D0%BA%D0%B0%D0%BD%D0%B4._%D0%A0%D1%83%D1%81%D1%81%D0%BA%D0%BE-%D0%90%D0%B7%D0%B8%D0%B0%D1%82%D1%81%D0%BA%D0%B8%D0%B9_%D0%B1%D0%B0%D0%BD%D0%BA_01.jpg',
+    imageUrl: 'https://commons.wikimedia.org/wiki/Special:FilePath/Barakhan_Madrasah_Tashkent.jpg?width=640',
     caption: 'Historic architectural monument, Fergana Valley',
   },
   attraction: {
-    imageUrl:
-      'https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c3/Islam_Khodja_Madrasa_01.jpg/640px-Islam_Khodja_Madrasa_01.jpg',
+    imageUrl: 'https://commons.wikimedia.org/wiki/Special:FilePath/Islam_Khodja_Madrasa_01.jpg?width=640',
     caption: 'Minaret and domes of Itchan Kala World Heritage city, Khiva',
+  },
+};
+
+/** Pre-indexed high-fidelity information for globally famous landmarks. */
+const FAMOUS_LANDMARKS: Record<string, { imageUrl: string; extract: string }> = {
+  registan: {
+    imageUrl: 'https://commons.wikimedia.org/wiki/Special:FilePath/RegistanSquare_Samarkand.jpg?width=640',
+    extract: 'The Registan was the heart of the ancient city of Samarkand of the Timurid Empire. The public square is framed by three monumental madrasahs: Ulugh Beg Madrasah, Sher-Dor Madrasah, and Tilya-Kori Madrasah, recognized worldwide as masterpieces of Islamic architecture.',
+  },
+  'poi kalyan': {
+    imageUrl: 'https://commons.wikimedia.org/wiki/Special:FilePath/Poi_Kalon.jpg?width=640',
+    extract: 'Po-i-Kalyan is an iconic Islamic religious complex surrounding the Kalyan minaret in Bukhara, Uzbekistan. The towering 45.6-meter minaret was built in 1127 by the Karakhanid ruler Arslan Khan and survived Genghis Khan’s invasion.',
+  },
+  kalyan: {
+    imageUrl: 'https://commons.wikimedia.org/wiki/Special:FilePath/Poi_Kalon.jpg?width=640',
+    extract: 'The Kalyan Minaret is a landmark minaret of the Po-i-Kalyan mosque complex in Bukhara, Uzbekistan. Built in 1127, it was designed to summon Muslims to prayer five times daily and served as a navigational beacon across the Kyzylkum desert.',
+  },
+  'gur-e-amir': {
+    imageUrl: 'https://commons.wikimedia.org/wiki/Special:FilePath/ShrineofAmirTimur.jpg?width=640',
+    extract: 'Gur-e-Amir is the mausoleum of the Asian conqueror Timur (Tamerlane) in Samarkand, Uzbekistan. With its ribbed azure dome and exquisite tile mosaics, it set the architectural prototype for Mughal tombs such as Humayun’s Tomb and the Taj Mahal.',
+  },
+  'ark of bukhara': {
+    imageUrl: 'https://commons.wikimedia.org/wiki/Special:FilePath/Ark_of_Bukhara_2023.9.jpg?width=640',
+    extract: 'The Ark of Bukhara is a massive 5th-century fortified citadel situated in the heart of Bukhara. It once housed the Emirs of Bukhara, government offices, barracks, a royal mint, and treasuries.',
+  },
+  itchan: {
+    imageUrl: 'https://commons.wikimedia.org/wiki/Special:FilePath/Islam_Khodja_Madrasa_01.jpg?width=640',
+    extract: 'Itchan Kala is the walled inner town of the ancient oasis city of Khiva, protected since 1990 as Uzbekistan’s first UNESCO World Heritage Site. It preserves over fifty historic monuments and 250 vernacular dwellings behind 10-meter-high mudbrick ramparts.',
+  },
+  khudayar: {
+    imageUrl: 'https://commons.wikimedia.org/wiki/Special:FilePath/Palace_of_Khudayar_Khan.jpg?width=640',
+    extract: 'The Palace of Khudayar Khan, popularly known as the Pearl of Kokand, was the grand residence of the last ruler of the Kokand Khanate, built between 1863 and 1874 with majestic mosaic portals and opulent throne rooms.',
+  },
+  'khast imam': {
+    imageUrl: 'https://commons.wikimedia.org/wiki/Special:FilePath/Barakhan_Madrasah_Tashkent.jpg?width=640',
+    extract: 'The Hazrati Imam (Khast Imam) Complex is the spiritual religious centre of Tashkent, housing the 16th-century Barakhan Madrasah and the Muyi Mubarak Library, guardian of the famed 7th-century Uthman Quran written on deerskin.',
   },
 };
 
@@ -67,13 +94,28 @@ function parseWikiTag(tag?: string): { lang: string; title: string } | null {
 
 /**
  * Fetch rich summary (extract and high-resolution thumbnail photo) for a heritage site.
- * Tries the explicit Wikipedia tag first, then site English name, and falls back to
- * authentic Silk Road photography for that category.
+ * Checks curated landmarks first, then explicit Wikipedia tags, English Wikipedia API,
+ * and falls back to verified Silk Road photography for that category.
  */
 export async function getSiteSummary(props: SiteProperties): Promise<WikiSummary> {
   const cacheKey = props.id;
   if (cache.has(cacheKey)) {
     return cache.get(cacheKey)!;
+  }
+
+  // Check famous landmarks first for immediate high-fidelity result
+  const needle = `${props.name} ${props.name_en || ''}`.toLowerCase();
+  for (const [key, landmark] of Object.entries(FAMOUS_LANDMARKS)) {
+    if (needle.includes(key)) {
+      const summary: WikiSummary = {
+        title: props.name_en || props.name,
+        extract: landmark.extract,
+        imageUrl: landmark.imageUrl,
+        pageUrl: props.wikipedia ? `https://en.wikipedia.org/wiki/${parseWikiTag(props.wikipedia)?.title ?? ''}` : null,
+      };
+      cache.set(cacheKey, summary);
+      return summary;
+    }
   }
 
   const parsed = parseWikiTag(props.wikipedia);
@@ -131,12 +173,12 @@ export async function getSiteSummary(props: SiteProperties): Promise<WikiSummary
     }
   }
 
-  // 3. Fallback to curated high-resolution photography if needed
+  // 3. Fallback to verified category photography if photo wasn't found
   if (!imageUrl) {
     imageUrl = CATEGORY_FALLBACK_IMAGES[props.category].imageUrl;
   }
 
-  // 4. Ensure description is ALWAYS 100% high-quality English
+  // 4. Ensure description is ALWAYS 100% clean, informative English
   if (!extract) {
     const builtClause = props.start_date ? `, dating back to ${props.start_date}` : '';
     const unescoClause = props.unesco

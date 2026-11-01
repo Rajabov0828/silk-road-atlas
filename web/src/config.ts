@@ -24,15 +24,15 @@ export function amazonStyleUrl(cfg: AppConfig, style: 'Standard' | 'Monochrome' 
 }
 
 export const CATEGORY_META: Record<Category, { label: string; color: string; icon: string }> = {
-  caravanserai: { label: 'Caravanserais', color: '#f59e0b', icon: '🐫' },
-  madrasa: { label: 'Madrasas', color: '#38bdf8', icon: '📜' },
-  mosque: { label: 'Mosques', color: '#22c55e', icon: '🕌' },
-  mausoleum: { label: 'Mausoleums', color: '#a78bfa', icon: '🏛️' },
-  fortress: { label: 'Fortresses & ruins', color: '#ef4444', icon: '🏰' },
-  archaeology: { label: 'Archaeology', color: '#d97706', icon: '⛏️' },
-  museum: { label: 'Museums', color: '#ec4899', icon: '🖼️' },
-  monument: { label: 'Monuments', color: '#94a3b8', icon: '🗿' },
-  attraction: { label: 'Attractions', color: '#14b8a6', icon: '⭐' },
+  caravanserai: { label: 'Caravanserais', color: '#2563eb', icon: '🐫' },
+  madrasa: { label: 'Madrasas', color: '#0284c7', icon: '📜' },
+  mosque: { label: 'Mosques', color: '#059669', icon: '🕌' },
+  mausoleum: { label: 'Mausoleums', color: '#7c3aed', icon: '🏛️' },
+  fortress: { label: 'Fortresses & ruins', color: '#dc2626', icon: '🏰' },
+  archaeology: { label: 'Archaeology', color: '#0d9488', icon: '⛏️' },
+  museum: { label: 'Museums', color: '#db2777', icon: '🖼️' },
+  monument: { label: 'Monuments', color: '#475569', icon: '🗿' },
+  attraction: { label: 'Attractions', color: '#4f46e5', icon: '⭐' },
 };
 
 export const UZ_BOUNDS: [[number, number], [number, number]] = [
