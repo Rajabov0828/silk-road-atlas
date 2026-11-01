@@ -1,5 +1,4 @@
 import type { AppContext } from '../context';
-import { stopSpeaking, toggleAudioGuide } from '../audio';
 import { caravanDays, formatDistance, formatDuration, speedup } from '../caravan';
 import { $, clear, h, toast } from '../dom';
 import { fitTo, setRoute, setStops } from '../map';
@@ -52,7 +51,6 @@ export function initStory(ctx: AppContext): void {
 
   async function go(target: number): Promise<void> {
     if (target < 0 || target > STORY.length) return;
-    stopSpeaking();
     step = target;
     prev.disabled = step <= 0;
     next.disabled = step >= STORY.length;
@@ -98,31 +96,15 @@ export function initStory(ctx: AppContext): void {
           )
         : h('div', { class: 'muted small' }, 'The caravan loads up its silk here.'),
       h(
-        'div',
-        { class: 'row' },
-        h(
-          'button',
-          {
-            class: 'btn small ghost audio-btn',
-            onclick: (e: Event) => {
-              const narration = `Stop ${step + 1}: ${stop.city}. ${stop.era}. ${stop.text}`;
-              toggleAudioGuide(narration, e.currentTarget as HTMLElement);
-            },
+        'button',
+        {
+          class: 'btn small ghost',
+          onclick: () => {
+            ctx.showTab('explore');
+            $('#panel-explore').dispatchEvent(new CustomEvent('explore:text', { detail: stop.city }));
           },
-          '🎧 Listen Story',
-        ),
-        h(
-          'button',
-          {
-            class: 'btn small ghost',
-            onclick: () => {
-              stopSpeaking();
-              ctx.showTab('explore');
-              $('#panel-explore').dispatchEvent(new CustomEvent('explore:text', { detail: stop.city }));
-            },
-          },
-          `🔍 Explore ${stop.city}`,
-        ),
+        },
+        `🔍 Explore heritage sites in ${stop.city}`,
       ),
     );
   }
