@@ -103,6 +103,88 @@ export function initExplore(ctx: AppContext): void {
   const chipMosques = h('button', { class: 'quick-chip', type: 'button' }, '🕌 Mosques');
   const chipMausoleums = h('button', { class: 'quick-chip', type: 'button' }, '🏛️ Mausoleums');
 
+  // Featured Silk Road Wonders (2x2 Visual Spotlight Grid)
+  const featuredSites = [
+    {
+      id: 'relation/17141748',
+      title: 'Registan Square',
+      city: 'Samarkand',
+      tag: '★ UNESCO',
+      coords: [66.975903, 39.655004] as [number, number],
+      thumb: '/thumbs/registan.jpg',
+    },
+    {
+      id: 'node/10815792405',
+      title: 'Ark of Bukhara',
+      city: 'Bukhara',
+      tag: '🏰 5th c. Citadel',
+      coords: [64.411087, 39.777885] as [number, number],
+      thumb: '/thumbs/ark.jpg',
+    },
+    {
+      id: 'way/185036984',
+      title: 'Itchan Kala',
+      city: 'Khiva',
+      tag: '★ UNESCO Oasis',
+      coords: [60.3598, 41.378098] as [number, number],
+      thumb: '/thumbs/itchan-kala.jpg',
+    },
+    {
+      id: 'way/299867379',
+      title: 'Rabat-i Malik',
+      city: 'Navoiy Desert',
+      tag: '🐫 Caravanserai 1078',
+      coords: [65.148179, 40.123081] as [number, number],
+      thumb: '/thumbs/rabat-malik.jpg',
+    },
+  ];
+
+  const featuredCards = featuredSites.map((item) => {
+    return h(
+      'button',
+      {
+        class: 'featured-card',
+        type: 'button',
+        onclick: () => {
+          ctx.map.flyTo({
+            center: item.coords,
+            zoom: 16,
+            pitch: 55,
+            bearing: -15,
+            duration: 1400,
+            essential: true,
+          });
+          const target = ctx.sites.find((s) => s.properties.id === item.id);
+          if (target) ctx.openSite(target);
+        },
+      },
+      h(
+        'div',
+        { class: 'featured-thumb-wrap' },
+        h('img', { src: item.thumb, alt: item.title, class: 'featured-thumb', loading: 'lazy' }),
+        h('span', { class: 'featured-badge' }, item.tag),
+      ),
+      h(
+        'div',
+        { class: 'featured-info' },
+        h('strong', {}, item.title),
+        h('span', { class: 'muted small' }, item.city),
+      ),
+    );
+  });
+
+  const featuredSection = h(
+    'div',
+    { class: 'featured-section' },
+    h(
+      'div',
+      { class: 'featured-header' },
+      h('span', { class: 'eyebrow' }, '✦ Iconic Silk Road Wonders'),
+      h('span', { class: 'muted small' }, '3D flyover ↗'),
+    ),
+    h('div', { class: 'featured-scroll' }, ...featuredCards),
+  );
+
   chipAll.onclick = () => {
     state.categories = new Set(allCategories);
     state.unescoOnly = false;
@@ -194,6 +276,7 @@ export function initExplore(ctx: AppContext): void {
   panel.append(
     form,
     placeResults,
+    featuredSection,
     quickFiltersContainer,
     h('div', { class: 'row' }, citySelect, h('label', { class: 'toggle' }, unesco, ' UNESCO only')),
     h('div', { class: 'cats' }, ...catButtons),

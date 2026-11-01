@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      width: 1200px;
+      height: 675px;
+      overflow: hidden;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Inter', Helvetica, Arial, sans-serif;
+      position: relative;
+      background: #0f172a;
+      color: #ffffff;
+    }
+    .bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 1200px;
+      height: 675px;
+      object-fit: cover;
+      object-position: center 40%;
+    }
+    .overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        180deg,
+        rgba(15, 23, 42, 0.8) 0%,
+        rgba(15, 23, 42, 0.1) 30%,
+        rgba(15, 23, 42, 0.15) 50%,
+        rgba(15, 23, 42, 0.95) 90%,
+        #0b0f19 100%
+      );
+    }
+    .top-bar {
+      position: absolute;
+      top: 26px;
+      left: 36px;
+      right: 36px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 10;
+    }
+    .aws-badge {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 7px 16px;
+      border-radius: 999px;
+      font-size: 13.5px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+    }
+    .aws-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #10b981;
+      box-shadow: 0 0 10px #10b981;
+    }
+    .live-url-pill {
+      background: rgba(2, 132, 199, 0.88);
+      backdrop-filter: blur(12px);
+      color: #ffffff;
+      padding: 7px 18px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.4px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 0 4px 16px rgba(2, 132, 199, 0.4);
+    }
+    .bottom-content {
+      position: absolute;
+      bottom: 26px;
+      left: 36px;
+      right: 36px;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .eyebrow {
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: #38bdf8;
+      text-shadow: 0 2px 6px rgba(0,0,0,0.6);
+    }
+    h1 {
+      font-size: 46px;
+      font-weight: 900;
+      letter-spacing: -1px;
+      line-height: 1;
+      text-shadow: 0 4px 16px rgba(0, 0, 0, 0.8);
+      background: linear-gradient(135deg, #ffffff 40%, #e0f2fe 80%, #bae6fd 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .tagline {
+      font-size: 18px;
+      color: #cbd5e1;
+      font-weight: 500;
+      line-height: 1.3;
+      max-width: 850px;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+    }
+    .pills-row {
+      display: flex;
+      gap: 8px;
+      margin-top: 4px;
+      flex-wrap: wrap;
+    }
+    .pill {
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+    .pill.gold {
+      background: rgba(29, 78, 216, 0.9);
+      border-color: #60a5fa;
+      color: #ffffff;
+    }
+  </style>
+</head>
+<body>
+  <img src="../web/public/hero-banner.jpg" class="bg" alt="Silk Road Atlas" />
+  <div class="overlay"></div>
+
+  <div class="top-bar">
+    <div class="aws-badge">
+      <span class="aws-dot"></span>
+      <span>AWS Location Service Hackathon 2026</span>
+    </div>
+    <div class="live-url-pill">
+      🌐 d3fx98y0gpu4w7.cloudfront.net
+    </div>
+  </div>
+
+  <div class="bottom-content">
+    <div class="eyebrow">✦ Uzbekistan Spatial Heritage & Caravan Intelligence</div>
+    <h1>🐫 Silk Road Atlas</h1>
+    <p class="tagline">What took a camel caravan a month takes a modern car an afternoon.</p>
+    <div class="pills-row">
+      <div class="pill gold">🏛️ 2,024 Verified Heritage Sites</div>
+      <div class="pill">★ 339 UNESCO World Heritage</div>
+      <div class="pill">🐫 Routes v2 & OptimizeWaypoints</div>
+      <div class="pill">⏱️ CalculateIsolines 15-60 min</div>
+      <div class="pill">⚡ AWS Serverless</div>
+    </div>
+  </div>
+</body>
+</html>
