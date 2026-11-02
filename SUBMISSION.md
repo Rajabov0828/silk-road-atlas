@@ -2,6 +2,8 @@
 
 **Project Title:** Silk Road Atlas: Uzbekistan Heritage & Caravan Journey Explorer  
 **Live URL:** https://d3fx98y0gpu4w7.cloudfront.net  
+**Video Demo URL:** https://youtu.be/weGMQfFxBbY  
+**GitHub Repository:** https://github.com/Rajabov0828/silk-road-atlas  
 **Tagline:** *What took a Silk Road camel caravan a month takes a modern car an afternoon.*
 
 ---
